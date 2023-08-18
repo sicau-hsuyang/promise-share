@@ -19,23 +19,25 @@ function flushQueue(exec: Executor, val: unknown) {
   }
 }
 
-export function sharePromise<T extends unknown[], R>(fn: (...args: T) => R, ctx: unknown, ...args: T): Promise<R> {
-  return new Promise((resolve, reject) => {
-    if (hasExecuteFn) {
-      queue.push({ resolve: resolve as Resolve, reject });
-    } else {
-      const p = fn.apply(ctx, args);
-      Promise.resolve(p)
-        .then((res) => {
-          hasExecuteFn = false;
-          resolve(res);
-          flushQueue("resolve", res);
-        })
-        .catch((err) => {
-          hasExecuteFn = false;
-          reject(err);
-          flushQueue("reject", err);
-        });
-    }
-  });
+export function sharePromise<T extends unknown[], R>(fn: (...args: T) => R): (ctx: unknown, ...args: T) => Promise<R> {
+  return (ctx: unknown, ...args: T) => {
+    return new Promise((resolve, reject) => {
+      if (hasExecuteFn) {
+        queue.push({ resolve: resolve as Resolve, reject });
+      } else {
+        const p = fn.apply(ctx, args);
+        Promise.resolve(p)
+          .then((res) => {
+            hasExecuteFn = false;
+            resolve(res);
+            flushQueue("resolve", res);
+          })
+          .catch((err) => {
+            hasExecuteFn = false;
+            reject(err);
+            flushQueue("reject", err);
+          });
+      }
+    });
+  };
 }

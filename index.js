@@ -7,28 +7,30 @@ function flushQueue(exec, val) {
         executor(val);
     }
 }
-export function sharePromise(fn, ctx) {
-    var args = [];
-    for (var _i = 2; _i < arguments.length; _i++) {
-        args[_i - 2] = arguments[_i];
-    }
-    return new Promise(function (resolve, reject) {
-        if (hasExecuteFn) {
-            queue.push({ resolve: resolve, reject: reject });
+export function sharePromise(fn) {
+    return function (ctx) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
         }
-        else {
-            var p = fn.apply(ctx, args);
-            Promise.resolve(p)
-                .then(function (res) {
-                hasExecuteFn = false;
-                resolve(res);
-                flushQueue("resolve", res);
-            })
-                .catch(function (err) {
-                hasExecuteFn = false;
-                reject(err);
-                flushQueue("reject", err);
-            });
-        }
-    });
+        return new Promise(function (resolve, reject) {
+            if (hasExecuteFn) {
+                queue.push({ resolve: resolve, reject: reject });
+            }
+            else {
+                var p = fn.apply(ctx, args);
+                Promise.resolve(p)
+                    .then(function (res) {
+                    hasExecuteFn = false;
+                    resolve(res);
+                    flushQueue("resolve", res);
+                })
+                    .catch(function (err) {
+                    hasExecuteFn = false;
+                    reject(err);
+                    flushQueue("reject", err);
+                });
+            }
+        });
+    };
 }

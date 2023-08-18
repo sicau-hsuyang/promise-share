@@ -1,1 +1,1 @@
-# promise-share
+# easy-single-promise

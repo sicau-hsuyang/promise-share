@@ -8,7 +8,8 @@ function flushQueue(exec, val) {
     }
 }
 export function singlePromise(fn, ctx) {
-    return function () {
+    return function decorate() {
+        var _this = this;
         var args = [];
         for (var _i = 0; _i < arguments.length; _i++) {
             args[_i] = arguments[_i];
@@ -18,7 +19,9 @@ export function singlePromise(fn, ctx) {
                 queue.push({ resolve: resolve, reject: reject });
             }
             else {
-                var p = fn.apply(ctx, args);
+                // @ts-ignore
+                var p = fn.apply(ctx || _this, args);
+                hasExecuteFn = true;
                 Promise.resolve(p)
                     .then(function (res) {
                     hasExecuteFn = false;

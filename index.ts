@@ -20,12 +20,14 @@ function flushQueue(exec: Executor, val: unknown) {
 }
 
 export function singlePromise<T extends unknown[], R>(fn: (...args: T) => R, ctx: unknown): (...args: T) => Promise<R> {
-  return (...args: T) => {
+  return function decorate(...args: T) {
     return new Promise((resolve, reject) => {
       if (hasExecuteFn) {
         queue.push({ resolve: resolve as Resolve, reject });
       } else {
-        const p = fn.apply(ctx, args);
+        // @ts-ignore
+        const p = fn.apply(ctx || this, args);
+        hasExecuteFn = true;
         Promise.resolve(p)
           .then((res) => {
             hasExecuteFn = false;

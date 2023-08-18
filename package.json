@@ -1,0 +1,20 @@
+{
+  "name": "easy-single-promise",
+  "version": "0.0.1",
+  "description": "a library share promise result when you send many request concurrence",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sicau-hsuyang/promise-share.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sicau-hsuyang/promise-share/issues"
+  },
+  "homepage": "https://github.com/sicau-hsuyang/promise-share#readme"
+}

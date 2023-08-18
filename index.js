@@ -7,11 +7,11 @@ function flushQueue(exec, val) {
         executor(val);
     }
 }
-export function sharePromise(fn) {
-    return function (ctx) {
+export function singlePromise(fn, ctx) {
+    return function () {
         var args = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            args[_i - 1] = arguments[_i];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
         }
         return new Promise(function (resolve, reject) {
             if (hasExecuteFn) {

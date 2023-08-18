@@ -19,8 +19,8 @@ function flushQueue(exec: Executor, val: unknown) {
   }
 }
 
-export function sharePromise<T extends unknown[], R>(fn: (...args: T) => R): (ctx: unknown, ...args: T) => Promise<R> {
-  return (ctx: unknown, ...args: T) => {
+export function singlePromise<T extends unknown[], R>(fn: (...args: T) => R, ctx: unknown): (...args: T) => Promise<R> {
+  return (...args: T) => {
     return new Promise((resolve, reject) => {
       if (hasExecuteFn) {
         queue.push({ resolve: resolve as Resolve, reject });

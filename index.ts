@@ -19,7 +19,7 @@ function flushQueue(exec: Executor, val: unknown) {
   }
 }
 
-export function singlePromise<T extends unknown[], R>(fn: (...args: T) => R, ctx: unknown): (...args: T) => Promise<R> {
+export function singlePromise<T extends unknown[], R>(fn: (...args: T) => R, ctx?: unknown): (...args: T) => Promise<R> {
   return function decorate(...args: T) {
     return new Promise((resolve, reject) => {
       if (hasExecuteFn) {

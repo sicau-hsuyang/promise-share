@@ -10,7 +10,8 @@
     "jsx": "preserve",
     "lib": ["ESNext", "dom"],
     "module": "esnext",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "outDir": "dist"
   },
-  "include": ["index.ts"]
+  "include": ["src"]
 }

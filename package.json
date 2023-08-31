@@ -2,7 +2,8 @@
   "name": "easy-single-promise",
   "version": "0.0.8",
   "description": "a library share promise result when you send many request concurrence",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "tsc --watch",
     "build": "tsc"
@@ -18,7 +19,6 @@
   },
   "homepage": "https://github.com/sicau-hsuyang/promise-share#readme",
   "files": [
-    "index.js",
-    "index.d.ts"
+    "dist"
   ]
 }

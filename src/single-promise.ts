@@ -1,25 +1,28 @@
-let hasExecuteFn = false;
-
 type Resolve = (value: unknown) => void;
 
 type Reject = (reason?: any) => void;
 
 type Executor = "resolve" | "reject";
 
-const queue: Array<{
-  resolve: Resolve;
-  reject: Reject;
-}> = [];
+export function singlePromise<T extends unknown[], R>(
+  fn: (...args: T) => R,
+  ctx?: unknown
+): (...args: T) => Promise<R> {
+  let hasExecuteFn = false;
 
-function flushQueue(exec: Executor, val: unknown) {
-  while (queue.length) {
-    const node = queue.shift();
-    const executor = node![exec];
-    executor(val);
+  const queue: Array<{
+    resolve: Resolve;
+    reject: Reject;
+  }> = [];
+
+  function flushQueue(exec: Executor, val: unknown) {
+    while (queue.length) {
+      const node = queue.shift();
+      const executor = node![exec];
+      executor(val);
+    }
   }
-}
 
-export function singlePromise<T extends unknown[], R>(fn: (...args: T) => R, ctx?: unknown): (...args: T) => Promise<R> {
   return function decorate(...args: T) {
     return new Promise((resolve, reject) => {
       if (hasExecuteFn) {

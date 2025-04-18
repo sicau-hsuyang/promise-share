@@ -1,4 +1,7 @@
-export function preventRepeatPromise<T extends unknown[], R>(fn: (...args: T) => R, ctx?: unknown): (...args: T) => Promise<R> {
+export function fastClickPrevent<T extends unknown[], R>(
+  fn: (...args: T) => R,
+  ctx?: unknown
+): (...args: T) => Promise<R> {
   let prevent = false;
   return function decorate(...args: T) {
     if (prevent) {

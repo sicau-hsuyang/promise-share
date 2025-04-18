@@ -1,6 +1,6 @@
 {
   "name": "easy-single-promise",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "a library share promise result when you send many request concurrence",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

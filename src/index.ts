@@ -1,2 +1,2 @@
 export { singlePromise } from './single-promise'
-export { preventRepeatPromise as protect } from './prevent-repeat-promise'
+export { fastClickPrevent as protect } from './prevent-repeat-promise'
